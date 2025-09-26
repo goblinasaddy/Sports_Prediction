@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { getModelFile, getModelMetrics } from '@/services/storage';
 
 const PredictMatchWinnerInputSchema = z.object({
   tournament: z.string().describe('The name of the tournament.'),
@@ -30,14 +31,6 @@ const PredictMatchWinnerOutputSchema = z.object({
 });
 export type PredictMatchWinnerOutput = z.infer<typeof PredictMatchWinnerOutputSchema>;
 
-// Placeholder for fetching model metrics from a source like Firebase Storage
-const model_metrics: Record<string, any> = {
-  "Logistic Regression": { "Accuracy": 0.87, "AUC": 0.91, "Precision": 0.85, "Recall": 0.88 },
-  "Random Forest": { "Accuracy": 0.89, "AUC": 0.93, "Precision": 0.88, "Recall": 0.90 },
-  "LightGBM": { "Accuracy": 0.91, "AUC": 0.95, "Precision": 0.90, "Recall": 0.92 },
-  "Neural Network": { "Accuracy": 0.88, "AUC": 0.92, "Precision": 0.86, "Recall": 0.89 },
-};
-
 // Placeholder for predicted winners
 const predicted_winners = ["Carlos Alcaraz", "Jannik Sinner", "Novak Djokovic", "Alexander Zverev", "Daniil Medvedev"];
 
@@ -48,15 +41,24 @@ const predictMatchWinnerFlow = ai.defineFlow(
     outputSchema: PredictMatchWinnerOutputSchema,
   },
   async (input) => {
-    // Simulate fetching model and metrics
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // In a real scenario, you would use the modelFile for prediction.
+    // For now, we are just fetching it to demonstrate connectivity.
+    const [modelFile, allMetrics] = await Promise.all([
+        getModelFile(input.model),
+        getModelMetrics(),
+    ]);
+
+    if (!modelFile) {
+        throw new Error("Could not load model file from storage.");
+    }
     
-    const metrics = model_metrics[input.model];
+    const metrics = allMetrics[input.model];
     if (!metrics) {
       throw new Error(`Metrics not found for model: ${input.model}`);
     }
 
     // Simulate running prediction
+    await new Promise(resolve => setTimeout(resolve, 1500));
     const winner = predicted_winners[Math.floor(Math.random() * predicted_winners.length)];
     
     return {
