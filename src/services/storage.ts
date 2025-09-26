@@ -4,10 +4,10 @@ import {storage} from '@/lib/firebase';
 import {ref, getBytes, getMetadata} from 'firebase/storage';
 
 const modelFileNames: Record<string, string> = {
-  'Logistic Regression': 'logistic.pkl',
-  'Random Forest': 'random_forest.pkl',
-  'LightGBM': 'lightgbm.pkl',
-  'Neural Network': 'neural_net.pt',
+  'Logistic Regression': 'tennis_models/logistic.pkl',
+  'Random Forest': 'tennis_models/random_forest.pkl',
+  'LightGBM': 'tennis_models/lightgbm.pkl',
+  'Neural Network': 'tennis_models/neural_net.pt',
 };
 
 // In-memory cache for downloaded files

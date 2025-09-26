@@ -41,20 +41,27 @@ const predictMatchWinnerFlow = ai.defineFlow(
     outputSchema: PredictMatchWinnerOutputSchema,
   },
   async (input) => {
+    // Fetch model and metrics from Firebase Storage
+    const [modelFile, allMetrics] = await Promise.all([
+      getModelFile(input.model),
+      getModelMetrics(),
+    ]);
+
     // Simulate running prediction with the fetched model (actual prediction logic not implemented).
     // The following is placeholder logic. A real implementation would involve
     // using a Python runtime or similar to execute the model.
     await new Promise(resolve => setTimeout(resolve, 1500));
     const winner = predicted_winners[Math.floor(Math.random() * predicted_winners.length)];
     
+    // Retrieve metrics for the selected model
+    const metrics = allMetrics[input.model];
+    if (!metrics) {
+      throw new Error(`Metrics not found for model: ${input.model}`);
+    }
+
     return {
       winner,
-      metrics: {
-        Accuracy: Math.random() * (0.95 - 0.8) + 0.8,
-        AUC: Math.random() * (0.98 - 0.85) + 0.85,
-        Precision: Math.random() * (0.9 - 0.78) + 0.78,
-        Recall: Math.random() * (0.92 - 0.82) + 0.82,
-      },
+      metrics,
     };
   }
 );
