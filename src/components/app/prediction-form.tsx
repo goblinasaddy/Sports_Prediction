@@ -60,7 +60,7 @@ export function PredictionForm() {
       <CardHeader className="text-center">
         <div className="flex items-center justify-center gap-3">
           <TennisBallIcon className="h-10 w-10 text-primary" />
-          <CardTitle className="text-4xl font-headline font-bold">MatchPoint Predictor</CardTitle>
+          <CardTitle className="text-4xl font-headline font-bold">Tennis predictor</CardTitle>
         </div>
         <CardDescription className="pt-2">Select a tournament and model to predict the winner.</CardDescription>
       </CardHeader>
