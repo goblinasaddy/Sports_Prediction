@@ -9,10 +9,10 @@ interface PredictionResultProps {
 
 export function PredictionResult({ result }: PredictionResultProps) {
   const metrics = [
-    { name: "Accuracy", value: result.accuracy, Icon: Target },
-    { name: "AUC", value: result.auc, Icon: AreaChart },
-    { name: "Precision", value: result.precision, Icon: Crosshair },
-    { name: "Recall", value: result.recall, Icon: RefreshCw },
+    { name: "Accuracy", value: result.metrics.Accuracy, Icon: Target },
+    { name: "AUC", value: result.metrics.AUC, Icon: AreaChart },
+    { name: "Precision", value: result.metrics.Precision, Icon: Crosshair },
+    { name: "Recall", value: result.metrics.Recall, Icon: RefreshCw },
   ];
 
   return (
@@ -21,7 +21,7 @@ export function PredictionResult({ result }: PredictionResultProps) {
         <h3 className="text-lg font-semibold text-muted-foreground">Predicted Winner</h3>
         <div className="flex items-center justify-center gap-2 mt-2">
           <Trophy className="h-8 w-8 text-amber-400" />
-          <p className="text-3xl font-bold text-primary">{result.predictedWinner}</p>
+          <p className="text-3xl font-bold text-primary">{result.winner}</p>
         </div>
       </div>
       
