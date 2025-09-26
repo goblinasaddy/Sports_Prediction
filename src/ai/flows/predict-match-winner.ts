@@ -34,6 +34,14 @@ export type PredictMatchWinnerOutput = z.infer<typeof PredictMatchWinnerOutputSc
 // Placeholder for predicted winners
 const predicted_winners = ["Carlos Alcaraz", "Jannik Sinner", "Novak Djokovic", "Alexander Zverev", "Daniil Medvedev"];
 
+// Map frontend display names to the keys in model_metrics.json
+const modelKeyMapping: Record<string, string> = {
+  'Logistic Regression': 'logistic_regression',
+  'Random Forest': 'random_forest',
+  'LightGBM': 'lightgbm',
+  'Neural Network': 'neural_network',
+};
+
 const predictMatchWinnerFlow = ai.defineFlow(
   {
     name: 'predictMatchWinnerFlow',
@@ -53,8 +61,9 @@ const predictMatchWinnerFlow = ai.defineFlow(
     await new Promise(resolve => setTimeout(resolve, 1500));
     const winner = predicted_winners[Math.floor(Math.random() * predicted_winners.length)];
     
-    // Retrieve metrics for the selected model
-    const metrics = allMetrics[input.model];
+    // Retrieve metrics for the selected model using the mapping
+    const modelKey = modelKeyMapping[input.model];
+    const metrics = allMetrics[modelKey];
     if (!metrics) {
       throw new Error(`Metrics not found for model: ${input.model}`);
     }
