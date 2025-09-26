@@ -41,21 +41,22 @@ const predictMatchWinnerFlow = ai.defineFlow(
     outputSchema: PredictMatchWinnerOutputSchema,
   },
   async (input) => {
+    // Using mock data until model files are available in storage.
     // In a real scenario, you would use the modelFile for prediction.
     // For now, we are just fetching it to demonstrate connectivity.
-    const [modelFile, allMetrics] = await Promise.all([
-        getModelFile(input.model),
-        getModelMetrics(),
-    ]);
+    // const [modelFile, allMetrics] = await Promise.all([
+    //     getModelFile(input.model),
+    //     getModelMetrics(),
+    // ]);
 
-    if (!modelFile) {
-        throw new Error("Could not load model file from storage.");
-    }
+    // if (!modelFile) {
+    //     throw new Error("Could not load model file from storage.");
+    // }
     
-    const metrics = allMetrics[input.model];
-    if (!metrics) {
-      throw new Error(`Metrics not found for model: ${input.model}`);
-    }
+    // const metrics = allMetrics[input.model];
+    // if (!metrics) {
+    //   throw new Error(`Metrics not found for model: ${input.model}`);
+    // }
 
     // Simulate running prediction
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -63,7 +64,12 @@ const predictMatchWinnerFlow = ai.defineFlow(
     
     return {
       winner,
-      metrics
+      metrics: {
+        Accuracy: Math.random() * (0.95 - 0.8) + 0.8,
+        AUC: Math.random() * (0.98 - 0.85) + 0.85,
+        Precision: Math.random() * (0.9 - 0.78) + 0.78,
+        Recall: Math.random() * (0.92 - 0.82) + 0.82,
+      },
     };
   }
 );
